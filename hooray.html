@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOORAY 💚</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="celebrate">
+
+<audio autoplay>
+    <source src="trumpet.mp3" type="audio/mp3">
+</audio>
+
+<canvas id="confetti"></canvas>
+
+<div class="card hooray-card" id="card">
+    <h1>HOORAY!!! 🎉💚</h1>
+    <p>You just made my entire year.</p>
+    <p>Dress cute. Trust me. 🍽️✨</p>
+    <p>And remember… you’ve got your very own Superman right here ❤️</p>
+</div>
+
+<script>
+/* Make canvas a background */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const pieces = Array.from({length:200}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*6+2,
+    speed: Math.random()*3+2
+}));
+
+function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#98FF98";
+    pieces.forEach(p=>{
+        ctx.fillRect(p.x,p.y,p.size,p.size);
+        p.y+=p.speed;
+        if(p.y>canvas.height) p.y=0;
+    });
+    requestAnimationFrame(draw);
+}
+draw();
+
+/* Floating hearts */
+setInterval(()=>{
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💚";
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*20+15)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+},500);
+
+/* Superman easter egg */
+let typed = "";
+document.addEventListener("keydown", e=>{
+    typed += e.key.toLowerCase();
+    if(typed.includes("superman")){
+        document.getElementById("card").innerHTML = `
+            <h1>🦸‍♂️ SECRET UNLOCKED 🦸‍♂️</h1>
+            <p>You found the hidden message.</p>
+            <p>I’ll always try to be your Superman 💚</p>
+        `;
+    }
+});
+</script>
+
+</body>
+</html>
